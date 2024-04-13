@@ -8,6 +8,7 @@ mixer.init()
 font.init()
 clock = time.Clock()
 
+# текст
 text = font.SysFont('Arial', 40)
 
 loose_red = text.render(
@@ -19,27 +20,30 @@ loose_blue = text.render(
 )
 
 
-#! ФПС
+# ФПС
 fps = 60
 
+# положение
 x1 = 30
 y1 = 200
 
 x2 = 720
 y2 = 200
 
-#! экран
+# экран
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 500
 window = display.set_mode((800, 500))
 display.set_caption('Шутер')
 
+# цвет
 color = (255, 250, 205)
 
+# скорость мяча
 d_x = 3
 d_y = 3
 
-#! классы
+# классы
 class GameSprite(sprite.Sprite):
     def __init__(self, player_image, player_speed, player_x, player_y):
         super().__init__()
@@ -68,29 +72,28 @@ class Player(GameSprite):
         if keys_pressed[K_DOWN] and self.rect.y < 350:
             self.rect.y += self.speed
 
+# спрайты
 player1 = Player('red.png', 5, x1, y1)
 player2 = Player('blue.png', 5, x2, y2)
-
 ball = GameSprite('ball.png', 3, 200, 200)
 ball.image = transform.scale(image.load('ball.png'),(50, 50))
 
+
 run = True
 finish = False
-
 timer = 300
-
+# цикл
 while run:
     for e in event.get():
         keys_pressed = key.get_pressed()
         if e.type == QUIT:
             run = False
-
-
-
-    
+            
     if finish != True:
+        # фон
         window.fill((255, 255, 255))
 
+        # проверка столкновения мяча
         ball.rect.x += d_x
         ball.rect.y += d_y
 
@@ -106,7 +109,7 @@ while run:
         if ball.rect.x > SCREEN_WIDTH - 50:
             window.blit(loose_blue, (200, 200))
             finish = True
-        
+        # увеличение скорости каждые 5 секунд
         if timer == 0:
             timer = 300
             if d_x < 0:
@@ -117,7 +120,7 @@ while run:
         else:
             timer -= 1
 
-        
+        # отрисовка спрайтов
         player1.draw()
         player1.update1()
         player2.draw()
@@ -127,6 +130,6 @@ while run:
 
 
 
-
+    # обновление экрана и ФПС
     display.update()
     clock.tick(fps)
